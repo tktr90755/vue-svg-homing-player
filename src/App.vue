@@ -1,16 +1,17 @@
 <template>
   <div id="app">
-    <Sample/>
+    <SvgPlayer name="test"/>
+    <SvgPlayer name="test2"/>
   </div>
 </template>
 
 <script>
-import Sample from './components/Sample.vue'
+import SvgPlayer from './components/SvgPlayer.vue'
 
 export default {
   name: 'app',
   components: {
-    Sample
+    SvgPlayer
   }
 }
 </script>
