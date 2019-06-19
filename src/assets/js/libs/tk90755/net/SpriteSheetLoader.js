@@ -16,7 +16,7 @@ let callback = ()=>{
   console.log('_callback kitayo')
   console.log(loader.content)
 }
-let loader = new SvgLoader(callback);
+let loader = new SpriteSheetLoader(callback);
 loader.load('test.svg')
 */
 
@@ -36,7 +36,7 @@ if (!window.XMLHttpRequest){
 }
 
 import Loader from '@/assets/js/libs/tk90755/net/Loader.js'
-export default class SvgLoader extends Loader {
+export default class SpriteSheetLoader extends Loader {
 
   constructor() {
     super();
@@ -45,13 +45,15 @@ export default class SvgLoader extends Loader {
 
   //__________________________________________________________________________________
   // methods
-  load(path){
-    let xhr = new XMLHttpRequest();
-    let result;
+  load(jsonPath, imagePath){
     
+    this._content = {}
 
-    xhr.open('GET', path, true);
+    let xhr = new XMLHttpRequest();
+
+    xhr.open('GET', jsonPath, true);
     xhr.onreadystatechange = ()=>{
+      
       if(xhr.status === 404){
         super.loadIOErrorHandler()
       }else{
@@ -63,11 +65,37 @@ export default class SvgLoader extends Loader {
         else if(xhr.readyState === 3){ }
         else if(xhr.readyState === 4){
           if(xhr.status === 200){
-            result = document.getElementById('xhr-result1');
-            this._content = xhr.responseText;
-          }else if(xhr.status === 0){
-            result = document.getElementById('xhr-result1');
-            this._content = xhr.responseText;
+            this._content['json'] = xhr.responseText;
+          }else if(xhr0.status === 0){
+            this._content['json'] = xhr.responseText;
+          }
+          this.secondLoad(imagePath);
+        }
+      }
+    };
+    xhr.send(null);
+  }
+
+  secondLoad(path){
+    let xhr = new XMLHttpRequest();
+    xhr.responseType = "blob";
+    xhr.open('GET', path, true);
+    xhr.onreadystatechange = ()=>{
+      
+      if(xhr.status === 404){
+        super.loadIOErrorHandler()
+      }else{
+        if(xhr.readyState === 0){ }
+        else if(xhr.readyState === 1){ 
+          super.loaderProgressHandler();
+        }
+        else if(xhr.readyState === 2){ }
+        else if(xhr.readyState === 3){ }
+        else if(xhr.readyState === 4){
+          if(xhr.status === 200){
+            this._content['image'] = URL.createObjectURL(xhr.response);
+          }else if(xhr0.status === 0){
+            this._content['image'] = URL.createObjectURL(xhr.response);
           }
           super.loaderCompleteHandler();
         }
@@ -75,64 +103,4 @@ export default class SvgLoader extends Loader {
     };
     xhr.send(null);
   }
-
-  // kill(){
-
-  // }
-
-  // cancel(){
-
-  // }
-  //__________________________________________________________________________________
-  // Event Handler
-  // loaderInitHandler() {
-  //   this._dispatcher.dispatchEvent(new Event(Event.INIT));
-  // };
-
-  // loaderProgressHandler() {
-  //   this._dispatcher.dispatchEvent(new Event(Event.RENDER));
-  // };
-
-  // loaderCompleteHandler() {
-  //   if(this._callback !== null || this._callback !== undefined) _callback();
-  //   this._dispatcher.dispatchEvent(new Event(Event.COMPLETE));
-  // };
-
-  // loadIOErrorHandler() {
-  //   this._dispatcher.dispatchEvent(new Event(Event.IO_ERROR));
-  // };
-
-  // loadSecurityHandler() {
-  //   this._dispatcher.dispatchEvent(new Event(Event.SECURITY_ERROR));
-  // };
-
-  //__________________________________________________________________________________
-  // getter
-  // get request(){
-  //   return this._request;
-  // }
-
-  // get total(){
-  //   return this._total;
-  // }
-
-  // get loaded(){
-  //   return this._loaded;
-  // }
-
-  // get percent(){
-  //   return this._percent;
-  // }
-
-  // get content(){
-  //   return this._content;
-  // }
-
-  // get dispatcher(){
-  //   return _dispatcher;
-  // }
-
-  // get callback(){
-  //   return _callback;
-  // }
 }

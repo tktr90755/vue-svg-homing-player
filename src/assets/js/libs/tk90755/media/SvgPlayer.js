@@ -43,23 +43,23 @@ export default class SvgPlayer extends Player {
     this._svg;
     this._path;
     this._point;
-    this.dispatcher.addEventListener(Event.RENDER, this.renderHandler);
+    this.addEventListener(Event.RENDER, this.renderHandler);
   }
 
   //__________________________________________________________________________________
   // methods
   load(path, autoPlay){
-    let callback=()=>{
+    this._loader = new SvgLoader();
+    this._loader.callback =()=>{
       this.createSvg();
       this.renderInitEvent();
       if(autoPlay !== false) this.play();
     }
-    this._loader = new SvgLoader(callback);
     this._loader.load(path);
   }
 
   kill(){
-    this.dispatcher.removeEventListener(Event.RENDER, this.renderHandler);
+    this.removeEventListener(Event.RENDER, this.renderHandler);
 
     this.stop()
     super.kill()
