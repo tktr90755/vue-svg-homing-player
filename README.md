@@ -9,6 +9,7 @@ npm install git+https://github.com/tktr90755/vue-svg-homing-player.git
 ```
 
 ## Usage
+![SAMPLE SVG](./public/test.svg)  
 ```js
 let svgPlayer = new SvgPlayer();
 svgPlayer.speed = 1;
